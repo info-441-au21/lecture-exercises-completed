@@ -1,0 +1,16 @@
+{
+  "name": "getimgtags1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^3.0.0",
+    "node-html-parser": "^4.1.5"
+  }
+}

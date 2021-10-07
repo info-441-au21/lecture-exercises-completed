@@ -1,0 +1,19 @@
+{
+  "name": "plurals",
+  "version": "1.0.0",
+  "description": "simple web server",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dateformat": "^5.0.1",
+    "express": "^4.17.1",
+    "node-fetch": "^3.0.0",
+    "node-html-parser": "^4.1.5",
+    "pluralize": "^8.0.0"
+  }
+}
