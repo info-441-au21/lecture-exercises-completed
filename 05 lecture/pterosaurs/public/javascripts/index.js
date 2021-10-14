@@ -7,14 +7,18 @@ function getPterosaurPreview(onePterosaur){
 }
 
 async function getPterosaurs(){
-    let pterosaurResponse = await fetch("/api/getPterosaurs")
-    let pterosaurInfo = await pterosaurResponse.json();
-    
-    let html = pterosaurInfo.map(onePterosaur => {
-        return getPterosaurPreview(onePterosaur);
-    }).join("");
+    try{
+        let pterosaurResponse = await fetch("/api/getPterosaurs")
+        let pterosaurInfo = await pterosaurResponse.json();
+        
+        let html = pterosaurInfo.map(onePterosaur => {
+            return getPterosaurPreview(onePterosaur);
+        }).join("");
 
-    document.getElementById("results").innerHTML = html;
+        document.getElementById("results").innerHTML = html;
+    } catch(error) {
+        document.getElementById("results").innerHTML = "there was an error" + error;
+    }
 
     //alternate load of ajax fetch
     //let pterosaurInfo = await fetch("/api/getPterosaurs")
