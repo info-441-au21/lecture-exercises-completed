@@ -34,7 +34,7 @@ db.serialize(() => {
 
 router.get('/person', function(req, res, next) {
   let nameSearch = req.query.nameSearch ? req.query.nameSearch : ""
-  db.all(`SELECT * FROM people WHERE first_name = "${nameSearch}"`, (err, allRows) => {
+  db.all(`SELECT * FROM people WHERE first_name = ?`, nameSearch, (err, allRows) => {
     if (err){
       console.log("db error: " + err)
       res.send("db error: " + err);
