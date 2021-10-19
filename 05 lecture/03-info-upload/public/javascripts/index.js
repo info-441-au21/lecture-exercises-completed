@@ -13,10 +13,13 @@ async function uploadData(){
         .value;
 
     let response = await fetch(
-        "/addUserData",
+        "/users/addUserData",
         {
             method: "POST",
-            body: JSON.stringify(myData)
+            body: JSON.stringify(myData),
+            headers: {
+                'Content-Type': 'application/json'
+              }
         }
     )
 
