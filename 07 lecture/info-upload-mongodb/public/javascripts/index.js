@@ -24,3 +24,10 @@ async function uploadData(){
     )
 
 }
+
+
+async function loadUsers(){
+    let response = await fetch("/users/getUsers");
+    let responseText = await response.text();
+    document.getElementById("allusersdiv").innerHTML = responseText;
+}

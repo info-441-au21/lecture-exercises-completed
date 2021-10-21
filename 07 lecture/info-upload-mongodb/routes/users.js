@@ -36,4 +36,20 @@ router.post('/addUserData', async function(req, res, next) {
   }
 });
 
+router.get('/getUsers', async function(req, res, next) {
+  let allUsers = await User.find();
+
+  let html = allUsers.map(userInfo => {
+    return `User info: 
+    ${userInfo.first_name} 
+    ${userInfo.last_name}
+    ${userInfo.favorite_ice_cream}
+    `
+  }).join("<br>")
+
+  res.type("html")
+  res.send(html);
+
+})
+
 export default router;
