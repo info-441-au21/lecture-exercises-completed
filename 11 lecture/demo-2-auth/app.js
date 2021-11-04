@@ -44,10 +44,6 @@ app.use(sessions({
 const msid = new MsIdExpress.WebAppAuthClientBuilder(appSettings).build();
 // initialize the MS auth wrapper
 app.use(msid.initialize());
-app.use( function (req, res, next) {
-    req.msid = msid;
-    next();
-});
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
