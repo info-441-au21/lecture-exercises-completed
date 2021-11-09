@@ -1,9 +1,18 @@
 <html>
 <head>
     <script>
+        const socketProtocol = (window.location.protocol === 'https:' ? 'wss:' : 'ws:')
+        const portInfo = (window.location.port != 80 && window.location.port != 443 ? ":" + window.location.port  : '')
+        const socketUrl = socketProtocol + '//' + window.location.hostname + portInfo + '/socket/'
+        let webSocket = new WebSocket(socketUrl)
+
         function sendMessage() {
             const val = document.getElementById("textInput").value
-            alert("TODO: send message: " + val);
+            webSocket.send(val);
+        }
+
+        webSocket.onmessage = function(event) {
+            document.getElementById("output").innerHTML += event.data + "<br>";
         }
     </script>
 
