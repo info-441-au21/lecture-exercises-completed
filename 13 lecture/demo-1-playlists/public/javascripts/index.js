@@ -51,37 +51,15 @@ async function loadUsers(){
 
 async function loadPlaylists(userID){
     
-    //TODO: Load Playlist from server
-
-    let playlists_info = []
-    if(userID == 42){ // Kyle
-        playlists_info = [
-            {
-                userID: 42,
-                title: "sad playlist",
-                songs: ["that sad lonely song", "that sad breakup song", "that whistful future song"]
-            },{
-                userID: 42,
-                title: "fun playlist",
-                songs: ["that everyone dance song", "that play loud music song"]
-            }
-        ]
-    }else if(userID == 57) { //AnotherPerson
-        playlists_info = [
-            {
-                userID: 57,
-                title: "angry playlist",
-                songs: ["that angry breakup song", "that angry at the authorities song"]
-            }
-        ]
-    }
-
+    //Load Playlist from server
+    let response = await fetch("/users/playlists?userID=" + userID);
+    let playlists_info = await response.json();
 
     let playlistHTML = playlists_info.map(playlistInfo => {
         return `
         <div>
             <h4>Playlist: ${playlistInfo.title}</h3>
-            <strong>Songs:</strong> ${playlistInfo.songs.join(", ")}
+            <strong>Songs:</strong> ${playlistInfo.songs}
         </div>`
     }).join("<br>")
 
@@ -89,11 +67,36 @@ async function loadPlaylists(userID){
 }
 
 async function addBand(userID){
-    alert("TODO: add band to user: " + userID);
+    let bandToAdd = document.getElementById("add_band_text_" + userID).value;
+    await fetch("users/addBand", {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(
+            {
+                userID: userID,
+                band: bandToAdd
+            }
+        )
+    })
+    console.log("band added");
 }
 
 async function addPlaylist(userID){
-    alert("TODO: add playlist to user: " + userID);
+    let title = document.getElementById("add_playlist_title_text_" + userID).value;
+    let songs = document.getElementById("add_playlist_songs_text_" + userID).value;
+
+    await fetch("users/playlists", {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(
+            {
+                userID: userID,
+                title: title,
+                songs: songs
+            }
+        )
+    })
+   
 }
 
 async function deleteUser(userID){

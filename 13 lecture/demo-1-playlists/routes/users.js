@@ -5,6 +5,7 @@ var router = express.Router();
 main().catch(err => console.log(err));
 
 let User;
+let Playlist;
 
 async function main() {
   //Run mongo db locally with a command like:
@@ -21,6 +22,13 @@ async function main() {
     favorite_bands: [String]
   })
   User = mongoose.model('User', userSchema)
+
+  const playlistSchema = new mongoose.Schema({
+    title: String,
+    songs: String,
+    user: {type: mongoose.Schema.Types.ObjectId, ref: "User"}
+  })
+  Playlist = mongoose.model('Playlist', playlistSchema);
 }
 
 // Add a user
@@ -43,7 +51,38 @@ router.get('/', async function(req, res, next) {
 router.delete('/', async function(req, res, next) {
   let userID = req.body.userID;
   let deletedUserInfo = await User.deleteOne({_id: userID});
+  let deletedPlaylistInfo = await Playlist.deleteMany({user: userID});
   res.json({status: "success"});
+});
+
+router.post('/addBand', async function(req, res, next) {
+  let user = await User.findById(req.body.userID);
+  if(!user.favorite_bands.includes(req.body.band)){
+    user.favorite_bands.push(req.body.band);
+  }
+  let saveResponse = await user.save();
+  res.json({status: "success"})
+})
+
+
+router.post('/playlists', async function(req, res, next) {
+
+  let newPlaylist = new Playlist({
+    title: req.body.title,
+    songs: req.body.songs,
+    user: req.body.userID
+  })
+
+  let saveresponse = await newPlaylist.save();
+
+  res.json({status: "success"})
+})
+
+
+router.get('/playlists', async function(req, res, next) {
+  let userID = req.query.userID;
+  let userPlaylists = await Playlist.find({user: userID}).exec();
+  res.json(userPlaylists);
 });
 
 export default router;
