@@ -1,3 +1,4 @@
+import cache from 'memory-cache';
 import mongoose from "mongoose";
 import express from 'express';
 var router = express.Router();
@@ -33,7 +34,18 @@ async function getItemsSlow(){
 
 // get json data for all items
 router.get('/', async function(req, res, next) {
-  let allItems = await getItemsSlow();
+  // first try the cache
+  let allItems = cache.get("allItems")
+  if(allItems){
+    console.log("Found items in the cache!")
+  } else {
+    console.log("Cache miss, doing db lookup again")
+    allItems = await getItemsSlow();
+    cache.put("allItems", allItems, 30*1000)
+  }
+
+  console.log("returning allItems now")
+  res.set('Cache-Control', 'public, max-age=30')
   res.json(allItems);
 });
 
